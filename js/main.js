@@ -1,97 +1,89 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // 1. Load Navbar and Footer
+    fetch('shared/navbar.html')
+        .then(res => res.text())
+        .then(html => {
+            document.getElementById('navbar-placeholder').innerHTML = html;
+            setupThemeToggle(); // Call after navbar is loaded
+            highlightActiveLink();
+        });
 
-    /* =========================================
-       1. THEME TOGGLE (DARK/LIGHT MODE)
-       ========================================= */
-    const themeToggleBtn = document.getElementById('theme-toggle');
-    const body = document.body;
-    const icon = themeToggleBtn.querySelector('i');
+    fetch('shared/footer.html')
+        .then(res => res.text())
+        .then(html => {
+            document.getElementById('footer-placeholder').innerHTML = html;
+        });
 
-    // Check local storage for saved theme
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'dark') {
-        body.classList.replace('light-mode', 'dark-mode');
-        icon.classList.replace('fa-moon', 'fa-sun');
+    // 2. Populate Data (Hero Section)
+    if (document.getElementById('hero-name')) {
+        document.getElementById('hero-name').innerText = siteData.profile.name;
+        document.getElementById('hero-title').innerText = siteData.profile.title;
+        document.getElementById('link-github').href = siteData.profile.github;
+        document.getElementById('link-linkedin').href = siteData.profile.linkedin;
     }
 
-    themeToggleBtn.addEventListener('click', () => {
-        if (body.classList.contains('light-mode')) {
-            body.classList.replace('light-mode', 'dark-mode');
+    // 3. Populate Data (Projects Page)
+    const projectsGrid = document.getElementById('projects-grid');
+    if (projectsGrid) {
+        siteData.projects.forEach(proj => {
+            const tagsHTML = proj.tags.map(tag => `<span>${tag}</span>`).join('');
+            projectsGrid.innerHTML += `
+                <div class="project-card">
+                    <h3><a href="${proj.link}" target="_blank">${proj.title}</a></h3>
+                    <p>${proj.description}</p>
+                    <div class="project-tags">${tagsHTML}</div>
+                </div>
+            `;
+        });
+    }
+
+    // 4. Populate Data (Research Page)
+    const researchList = document.getElementById('research-list');
+    if (researchList) {
+        siteData.experience.forEach(exp => {
+            const detailsHTML = exp.details.map(d => `<li>${d}</li>`).join('');
+            researchList.innerHTML += `
+                <div class="experience-item">
+                    <h3>${exp.role} <span class="text-accent">@ ${exp.organization}</span></h3>
+                    <p class="text-muted">${exp.period}</p>
+                    <ul>${detailsHTML}</ul>
+                </div>
+            `;
+        });
+    }
+
+    // Theme Toggle Logic
+    function setupThemeToggle() {
+        const btn = document.getElementById('theme-toggle');
+        if (!btn) return;
+        const icon = btn.querySelector('i');
+        
+        // Load saved theme
+        if (localStorage.getItem('theme') === 'dark') {
+            document.body.classList.add('dark-mode');
             icon.classList.replace('fa-moon', 'fa-sun');
-            localStorage.setItem('theme', 'dark');
-        } else {
-            body.classList.replace('dark-mode', 'light-mode');
-            icon.classList.replace('fa-sun', 'fa-moon');
-            localStorage.setItem('theme', 'light');
         }
-    });
 
-    /* =========================================
-       2. SCROLL REVEAL ANIMATIONS
-       ========================================= */
-    const revealElements = document.querySelectorAll('.reveal');
-
-    const revealOptions = {
-        threshold: 0.15,
-        rootMargin: "0px 0px -50px 0px"
-    };
-
-    const revealOnScroll = new IntersectionObserver(function(entries, observer) {
-        entries.forEach(entry => {
-            if (!entry.isIntersecting) {
-                return;
+        btn.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            if (document.body.classList.contains('dark-mode')) {
+                icon.classList.replace('fa-moon', 'fa-sun');
+                localStorage.setItem('theme', 'dark');
             } else {
-                entry.target.classList.add('active');
-                observer.unobserve(entry.target); // Stop observing once revealed
+                icon.classList.replace('fa-sun', 'fa-moon');
+                localStorage.setItem('theme', 'light');
             }
         });
-    }, revealOptions);
+    }
 
-    revealElements.forEach(el => {
-        revealOnScroll.observe(el);
-    });
-
-    /* =========================================
-       3. EXPERIENCE TABS LOGIC
-       ========================================= */
-    const tabBtns = document.querySelectorAll('.tab-btn');
-    const expPanels = document.querySelectorAll('.exp-panel');
-
-    tabBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            // Remove active from all
-            tabBtns.forEach(b => b.classList.remove('active'));
-            expPanels.forEach(p => p.classList.remove('active'));
-
-            // Add active to clicked
-            btn.classList.add('active');
-            const targetId = btn.getAttribute('data-target');
-            document.getElementById(targetId).classList.add('active');
+    // Highlight active page in navbar
+    function highlightActiveLink() {
+        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            if (link.getAttribute('href') === currentPage) {
+                link.style.color = 'var(--accent)';
+                link.style.fontWeight = '700';
+            }
         });
-    });
-
-    /* =========================================
-       4. MOBILE MENU TOGGLE
-       ========================================= */
-    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-    const navLinks = document.getElementById('nav-links');
-
-    mobileMenuBtn.addEventListener('click', () => {
-        navLinks.classList.toggle('active');
-        const icon = mobileMenuBtn.querySelector('i');
-        if (navLinks.classList.contains('active')) {
-            icon.classList.replace('fa-bars', 'fa-xmark');
-        } else {
-            icon.classList.replace('fa-xmark', 'fa-bars');
-        }
-    });
-
-    // Close mobile menu when a link is clicked
-    const navItems = document.querySelectorAll('.nav-item');
-    navItems.forEach(item => {
-        item.addEventListener('click', () => {
-            navLinks.classList.remove('active');
-            mobileMenuBtn.querySelector('i').classList.replace('fa-xmark', 'fa-bars');
-        });
-    });
+    }
 });
