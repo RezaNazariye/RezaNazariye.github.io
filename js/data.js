@@ -54,5 +54,30 @@ const siteData = {
                 "Designed a fully isolated interface board for communication in high-noise industrial environments."
             ]
         }
-    ]
+    ],
+    interests: [
+        "Digital VLSI Design",
+        "Computer Architecture",
+        "FPGA-Based Computing",
+        "Hardware/Software Co-Design",
+        "Digital Verification"
+    ],
+
+    awards: [
+        {
+            title: "6th Place",
+            description: "Iranian M.Sc. Entrance Exam",
+            year: "2026"
+        },
+        {
+            title: "8th Place",
+            description: "31st Iranian National Student Olympiad",
+            year: "2024"
+        },
+        {
+            title: "100th Place",
+            description: "National University Entrance Exam",
+            year: "2022"
+        }
+    ],
 };

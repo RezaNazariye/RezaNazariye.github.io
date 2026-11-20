@@ -86,4 +86,24 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    async function loadComponent(path, elementId) {
+        const container = document.getElementById(elementId);
+
+        if (!container) return;
+
+        try {
+            const response = await fetch(path);
+
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}: ${path}`);
+            }
+
+            container.innerHTML = await response.text();
+
+        } catch (error) {
+            console.error("Component loading failed:", error);
+        }
+    }
+
 });
