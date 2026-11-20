@@ -1,66 +1,251 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Name | Engineering Portfolio</title>
+    <title>Reza Nazariye | Hardware Engineer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --bg-color: #f8f9fa;
+            --text-color: #212529;
+            --accent-color: #0d6efd;
+            --card-bg: #ffffff;
+            --border-color: #dee2e6;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
             max-width: 900px;
-            margin: 60px auto;
-            padding: 0 20px;
-            line-height: 1.7;
-            color: #222;
-            background: #fafafa;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Header Section */
+        header {
+            text-align: center;
+            margin-bottom: 50px;
         }
 
         h1 {
             font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--text-color);
         }
 
-        a {
-            color: #0969da;
+        .subtitle {
+            font-size: 1.2rem;
+            color: #6c757d;
+            font-weight: 400;
+            margin-bottom: 20px;
+        }
+
+        .links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .links a {
             text-decoration: none;
+            color: var(--accent-color);
+            font-weight: 600;
+            padding: 8px 16px;
+            border: 2px solid var(--accent-color);
+            border-radius: 6px;
+            transition: all 0.3s ease;
         }
 
-        .project {
-            padding: 18px;
-            margin: 15px 0;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            background: white;
+        .links a:hover {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        /* Section Titles */
+        h2 {
+            font-size: 1.5rem;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+            margin-top: 40px;
+        }
+
+        /* Project Cards */
+        .project-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 20px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .project-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        }
+
+        .project-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 10px;
+        }
+
+        .project-card p {
+            color: #495057;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+        }
+
+        .tech-tags {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .tech-tags span {
+            background-color: #e9ecef;
+            color: #495057;
+            font-size: 0.8rem;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .project-link {
+            display: inline-block;
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .project-link:hover {
+            color: var(--accent-color);
+        }
+
+        /* Skills Section */
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .skills-list span {
+            background-color: #212529;
+            color: white;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 400;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            color: #6c757d;
+            font-size: 0.9rem;
         }
     </style>
 </head>
-
 <body>
 
-    <h1>Your Name</h1>
-    <p>Master's Student | Engineering | Digital Design</p>
+    <div class="container">
+        <!-- HEADER -->
+        <header>
+            <h1>Reza Nazariye</h1>
+            <div class="subtitle">M.Sc. Student in Electrical Engineering | Hardware Architecture & VLSI</div>
+            <div class="links">
+                <a href="https://github.com/RezaNazariye" target="_blank">GitHub</a>
+                <!-- UPDATE THIS LINK -->
+                <a href="https://www.linkedin.com/in/YOUR_LINKEDIN" target="_blank">LinkedIn</a>
+                <!-- UPDATE THIS EMAIL -->
+                <a href="mailto:your.email@example.com">Email</a>
+            </div>
+        </header>
 
-    <h2>About Me</h2>
-    <p>
-        I am interested in digital design, computer architecture,
-        embedded systems, and hardware programming.
-    </p>
+        <!-- ABOUT ME -->
+        <section>
+            <h2>About Me</h2>
+            <p>
+                I am an M.Sc. student at <strong>Sharif University of Technology</strong>, specializing in Digital VLSI System Design and Advanced Computer Architecture. My research interests include RTL design, hardware verification, custom FPGA architectures, and processor design. I am passionate about building efficient hardware systems from the ground up and rigorously verifying them against golden models.
+            </p>
+        </section>
 
-    <h2>Technical Skills</h2>
-    <p>C, C++, Verilog, SystemVerilog</p>
+        <!-- PROJECTS -->
+        <section>
+            <h2>Featured Projects</h2>
 
-    <h2>Projects</h2>
+            <!-- Project 1: FPGA -->
+            <div class="project-card">
+                <h3>Custom FPGA Architecture & Bitstream Programming</h3>
+                <p>
+                    Designed a custom FPGA from scratch in Verilog, featuring Configurable Logic Blocks (CLBs), a LUT4, and a programmable routing matrix. Performed manual synthesis and place-and-route to generate a 38-bit configuration bitstream to map logic onto the FPGA fabric.
+                </p>
+                <div class="tech-tags">
+                    <span>Verilog</span>
+                    <span>SystemVerilog</span>
+                    <span>Vivado</span>
+                    <span>Computer Architecture</span>
+                </div>
+                <a href="https://github.com/RezaNazariye/VLSI_course_custom-fpga-architecture" class="project-link" target="_blank">View Repository &rarr;</a>
+            </div>
 
-    <div class="project">
-        <h3>Project Name</h3>
-        <p>A short description of your project.</p>
-        <a href="YOUR_GITHUB_PROJECT_LINK">View Project</a>
+            <!-- Project 2: MIPS -->
+            <div class="project-card">
+                <h3>Single-Cycle MIPS Processor (ACA-MIPS)</h3>
+                <p>
+                    Implemented the complete datapath and combinational control unit for a 32-bit Single-Cycle MIPS processor. Extended the baseline architecture to support zero-extension, LUI, BNE, and Jump instructions. Verified using cycle-accurate insertion sort benchmarks.
+                </p>
+                <div class="tech-tags">
+                    <span>Verilog</span>
+                    <span>ModelSim</span>
+                    <span>Datapath Design</span>
+                    <span>ISA</span>
+                </div>
+                <a href="https://github.com/RezaNazariye/AdvancedComputerArchitecture_Single-Cycle_MIPS_Processor" class="project-link" target="_blank">View Repository &rarr;</a>
+            </div>
+        </section>
+
+        <!-- SKILLS -->
+        <section>
+            <h2>Technical Skills</h2>
+            <div class="skills-list">
+                <span>Verilog / SystemVerilog</span>
+                <span>Digital Logic Design</span>
+                <span>Computer Architecture</span>
+                <span>VLSI</span>
+                <span>FPGA Prototyping</span>
+                <span>C / C++</span>
+                <span>Python / MATLAB</span>
+                <span>Vivado</span>
+                <span>ModelSim</span>
+                <span>Git</span>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer>
+            &copy; 2026 Reza Nazariye. Built with GitHub Pages.
+        </footer>
     </div>
-
-    <h2>Contact</h2>
-    <p>
-        <a href="YOUR_GITHUB_PROFILE">GitHub</a>
-    </p>
 
 </body>
 </html>
