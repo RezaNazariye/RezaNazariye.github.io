@@ -4,333 +4,433 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reza Nazariye | Digital Electronics & VLSI</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg-color: #f8f9fa;
-            --text-color: #212529;
-            --accent-color: #0d6efd;
-            --card-bg: #ffffff;
-            --border-color: #dee2e6;
-            --text-muted: #6c757d;
-        }
-
+        /* =========================================
+           RESET & BASE STYLES
+           ========================================= */
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #ffffff;
+            color: #111111;
             line-height: 1.6;
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
         }
 
+        a {
+            color: #0066cc;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        a:hover {
+            color: #004499;
+            text-decoration: underline;
+        }
+
+        /* =========================================
+           LAYOUT
+           ========================================= */
         .container {
-            max-width: 900px;
+            max-width: 720px;
             margin: 0 auto;
-            padding: 40px 20px;
+            padding: 0 24px;
         }
 
-        /* Header Section */
-        header {
-            text-align: center;
-            margin-bottom: 40px;
-            padding-bottom: 30px;
-            border-bottom: 2px solid var(--border-color);
+        section {
+            padding: 80px 0;
+            border-bottom: 1px solid #eaeaea;
         }
 
+        section:last-of-type {
+            border-bottom: none;
+        }
+
+        /* =========================================
+           TYPOGRAPHY
+           ========================================= */
         h1 {
-            font-size: 2.5rem;
+            font-size: 3rem;
             font-weight: 700;
-            margin-bottom: 5px;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+            margin-bottom: 16px;
+        }
+
+        h2 {
+            font-size: 1.75rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            margin-bottom: 32px;
+            color: #111111;
+        }
+
+        h3 {
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: #333333;
         }
 
         .subtitle {
-            font-size: 1.1rem;
-            color: var(--text-muted);
+            font-size: 1.25rem;
+            color: #555555;
             font-weight: 400;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
         }
 
-        .links {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-
-        .links a {
-            text-decoration: none;
-            color: var(--accent-color);
-            font-weight: 600;
+        .text-muted {
+            color: #666666;
             font-size: 0.9rem;
-            padding: 8px 16px;
-            border: 1px solid var(--accent-color);
-            border-radius: 6px;
-            transition: all 0.3s ease;
         }
 
-        .links a:hover {
-            background-color: var(--accent-color);
-            color: white;
+        /* =========================================
+           HEADER / HERO
+           ========================================= */
+        .hero {
+            padding-top: 120px;
+            padding-bottom: 100px;
+            border-bottom: 1px solid #eaeaea;
         }
 
-        /* Section Titles */
-        h2 {
-            font-size: 1.4rem;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 8px;
-            margin-bottom: 20px;
-            margin-top: 40px;
-            color: var(--text-color);
+        .hero-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+            margin-top: 32px;
         }
 
-        /* Standard Lists */
-        ul {
-            margin-left: 20px;
-            margin-bottom: 15px;
+        .hero-links a {
+            font-weight: 500;
+            font-size: 0.95rem;
+            border-bottom: 1px solid transparent;
         }
 
-        li {
-            margin-bottom: 8px;
-            color: #495057;
+        .hero-links a:hover {
+            text-decoration: none;
+            border-bottom: 1px solid #0066cc;
         }
 
-        /* Education & Experience Items */
+        /* =========================================
+           CONTENT BLOCKS
+           ========================================= */
         .timeline-item {
-            margin-bottom: 20px;
+            margin-bottom: 40px;
         }
 
-        .timeline-header {
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .item-header {
             display: flex;
             justify-content: space-between;
             align-items: baseline;
             flex-wrap: wrap;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
         }
 
-        .timeline-title {
+        .item-title {
             font-weight: 600;
-            font-size: 1.05rem;
+            font-size: 1.1rem;
         }
 
-        .timeline-date {
-            font-size: 0.9rem;
-            color: var(--text-muted);
+        .item-date {
+            font-size: 0.85rem;
+            color: #888888;
             font-weight: 400;
+            white-space: nowrap;
         }
 
-        .timeline-subtitle {
+        .item-subtitle {
             font-size: 0.95rem;
-            color: var(--text-muted);
-            font-style: italic;
+            color: #555555;
+            margin-bottom: 8px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+            margin-top: 8px;
+        }
+
+        ul li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 8px;
+            color: #333333;
+            font-size: 0.95rem;
+        }
+
+        ul li::before {
+            content: "–";
+            position: absolute;
+            left: 0;
+            color: #999999;
         }
 
         /* Project Cards */
         .project-card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 15px;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            margin-bottom: 40px;
         }
 
-        .project-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 16px rgba(0,0,0,0.05);
-        }
-
-        .project-card h3 {
-            font-size: 1.1rem;
-            margin-bottom: 5px;
+        .project-card:last-child {
+            margin-bottom: 0;
         }
 
         .project-card h3 a {
-            color: var(--text-color);
+            color: #111111;
             text-decoration: none;
         }
-        
+
         .project-card h3 a:hover {
-            color: var(--accent-color);
+            color: #0066cc;
+            text-decoration: none;
         }
 
-        .project-card p {
-            color: #495057;
-            font-size: 0.95rem;
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
             margin-bottom: 12px;
         }
 
-        .tech-tags {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-
-        .tech-tags span {
-            background-color: #e9ecef;
-            color: #495057;
+        .project-tags span {
             font-size: 0.75rem;
-            padding: 3px 8px;
+            font-weight: 500;
+            color: #555555;
+            background-color: #f4f4f4;
+            padding: 4px 10px;
             border-radius: 4px;
+            letter-spacing: 0.02em;
+        }
+
+        /* Skills */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+        }
+
+        .skill-category h4 {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #888888;
+            margin-bottom: 12px;
             font-weight: 600;
         }
 
-        /* Skills Section */
-        .skills-list {
+        .skill-list {
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
-            margin-bottom: 15px;
         }
 
-        .skills-list span {
-            background-color: #212529;
-            color: white;
-            padding: 5px 12px;
+        .skill-list span {
+            font-size: 0.9rem;
+            color: #111111;
+            background-color: #f4f4f4;
+            padding: 6px 14px;
             border-radius: 20px;
-            font-size: 0.85rem;
             font-weight: 400;
-        }
-        
-        .skill-category {
-            font-weight: 600;
-            margin-top: 15px;
-            margin-bottom: 8px;
-            font-size: 0.95rem;
-            color: var(--text-color);
         }
 
         /* Footer */
         footer {
+            padding: 40px 0;
             text-align: center;
-            margin-top: 50px;
-            padding-top: 20px;
-            border-top: 1px solid var(--border-color);
-            color: var(--text-muted);
             font-size: 0.85rem;
+            color: #888888;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2.25rem;
+            }
+            .hero {
+                padding-top: 80px;
+                padding-bottom: 60px;
+            }
+            section {
+                padding: 60px 0;
+            }
+            .item-header {
+                flex-direction: column;
+                gap: 4px;
+            }
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <!-- HEADER -->
-        <header>
-            <h1>Reza Nazariye</h1>
-            <div class="subtitle">M.Sc. Student, Electrical Engineering (Digital Electronics)</div>
-            <div class="links">
+    <!-- HERO SECTION -->
+    <header class="hero">
+        <div class="container">
+            <h1>Hi, I'm Reza Nazariye</h1>
+            <div class="subtitle">M.Sc. Student in Electrical Engineering (Digital Electronics)</div>
+            <p>
+                I am a hardware engineer specializing in Digital VLSI and Computer Architecture. 
+                My work focuses on RTL design, hardware verification, and custom FPGA architectures. 
+                I am passionate about building efficient systems from the ground up and rigorously 
+                verifying them against golden models.
+            </p>
+            <div class="hero-links">
                 <a href="mailto:reza.nazariye86@sharif.edu">Email</a>
                 <a href="https://github.com/RezaNazariye" target="_blank">GitHub</a>
                 <!-- UPDATE THIS LINK -->
                 <a href="https://www.linkedin.com/in/YOUR_LINKEDIN" target="_blank">LinkedIn</a>
-                <a href="path_to_your_resume.pdf" target="_blank">Download CV</a>
+                <a href="CV.pdf" target="_blank">Download CV</a>
             </div>
-        </header>
+        </div>
+    </header>
 
-        <!-- EDUCATION & HONORS -->
-        <section>
-            <h2>Education</h2>
+    <!-- ABOUT ME -->
+    <section id="about">
+        <div class="container">
+            <h2>About Me</h2>
+            <p>
+                I am currently pursuing my M.Sc. at <strong>Sharif University of Technology</strong>, 
+                where I also completed my B.Sc. in Electrical Engineering (Digital Systems) with a GPA of 17.09/20. 
+                I ranked 6th in the Iranian National M.Sc. Entrance Exam in Electrical Engineering (2026) and 
+                8th in the 31st Iranian National Student Olympiad in Electrical Engineering.
+            </p>
+            <p>
+                My research interests lie at the intersection of digital design and computer architecture, 
+                with a focus on creating hardware that is both high-performance and verifiable. I have 
+                hands-on experience with FPGA prototyping (Zynq SoC), ASIC/FPGA co-design, and UVM verification.
+            </p>
+        </div>
+    </section>
+
+    <!-- EDUCATION & HONORS -->
+    <section id="education">
+        <div class="container">
+            <h2>Education & Honors</h2>
+            
             <div class="timeline-item">
-                <div class="timeline-header">
-                    <span class="timeline-title">M.Sc. in Electrical Engineering (Digital Electronics)</span>
-                    <span class="timeline-date">Sep 2026 – Present</span>
+                <div class="item-header">
+                    <span class="item-title">M.Sc. in Electrical Engineering (Digital Electronics)</span>
+                    <span class="item-date">Sep 2026 – Present</span>
                 </div>
-                <div class="timeline-subtitle">Sharif University of Technology, Tehran, Iran</div>
+                <div class="item-subtitle">Sharif University of Technology, Tehran, Iran</div>
             </div>
+
             <div class="timeline-item">
-                <div class="timeline-header">
-                    <span class="timeline-title">B.Sc. in Electrical Engineering (Digital Systems)</span>
-                    <span class="timeline-date">Oct 2022 – Aug 2026</span>
+                <div class="item-header">
+                    <span class="item-title">B.Sc. in Electrical Engineering (Digital Systems)</span>
+                    <span class="item-date">Oct 2022 – Aug 2026</span>
                 </div>
-                <div class="timeline-subtitle">Sharif University of Technology, Tehran, Iran | GPA: 17.09/20</div>
+                <div class="item-subtitle">Sharif University of Technology, Tehran, Iran | GPA: 17.09/20</div>
             </div>
 
-            <h2>Scientific Honors</h2>
-            <ul>
-                <li><strong>Ranked 6th</strong> in the Iranian National M.Sc. Entrance Exam in Electrical Engineering (2026).</li>
-                <li><strong>Ranked 8th</strong> in the 31st Iranian National Student Olympiad in Electrical Engineering.</li>
-                <li><strong>Ranked 100th</strong> nationally in the Iranian National University Entrance Exam (Mathematics & Physics, 2022).</li>
-            </ul>
-        </section>
+            <div class="timeline-item" style="margin-top: 40px;">
+                <div class="item-header">
+                    <span class="item-title">High School Diploma in Mathematics & Physics</span>
+                    <span class="item-date">Oct 2019 – Jun 2022</span>
+                </div>
+                <div class="item-subtitle">Dastgheib School of Exceptional Talents (Sampad), Shiraz, Iran | GPA: 18.90/20</div>
+            </div>
 
-        <!-- FEATURED PROJECTS -->
-        <section>
-            <h2>Featured Hardware & Architecture Projects</h2>
+            <div style="margin-top: 48px;">
+                <h3 style="margin-bottom: 16px;">Scientific Honors</h3>
+                <ul>
+                    <li><strong>Ranked 6th</strong> in the Iranian National M.Sc. Entrance Exam in Electrical Engineering (2026).</li>
+                    <li><strong>Ranked 8th</strong> in the 31st Iranian National Student Olympiad in Electrical Engineering.</li>
+                    <li><strong>Ranked 100th</strong> nationally in the Iranian National University Entrance Exam (Mathematics & Physics, 2022).</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects">
+        <div class="container">
+            <h2>Selected Projects</h2>
 
             <div class="project-card">
                 <h3><a href="https://github.com/RezaNazariye/VLSI_course_custom-fpga-architecture" target="_blank">Custom FPGA Architecture & Bitstream Programming &rarr;</a></h3>
-                <p>Designed a custom FPGA architecture from scratch in Verilog (CLBs, LUT4s, routing matrix). Performed manual synthesis and place-and-route, generating a 38-bit configuration bitstream to map logic onto the FPGA fabric.</p>
-                <div class="tech-tags">
+                <p>
+                    Designed a custom FPGA architecture from scratch in Verilog, featuring Configurable Logic Blocks (CLBs), LUT4s, and a programmable routing matrix. Performed manual synthesis and place-and-route, generating a 38-bit configuration bitstream to map logic onto the FPGA fabric. Verified with a self-checking SystemVerilog testbench.
+                </p>
+                <div class="project-tags">
                     <span>Verilog</span>
                     <span>SystemVerilog</span>
                     <span>Vivado</span>
-                    <span>Architecture</span>
+                    <span>Computer Architecture</span>
                 </div>
             </div>
 
             <div class="project-card">
                 <h3><a href="https://github.com/RezaNazariye/AdvancedComputerArchitecture_Single-Cycle_MIPS_Processor" target="_blank">Single-Cycle MIPS Processor (ACA-MIPS) &rarr;</a></h3>
-                <p>Implemented the complete datapath and combinational control unit for a 32-bit Single-Cycle MIPS processor. Extended the baseline architecture to support zero-extension, LUI, BNE, and Jump instructions. Verified using cycle-accurate insertion sort benchmarks.</p>
-                <div class="tech-tags">
+                <p>
+                    Implemented the complete datapath and combinational control unit for a 32-bit Single-Cycle MIPS processor. Extended the baseline architecture to support zero-extension, LUI, BNE, and Jump instructions. Verified using cycle-accurate insertion sort benchmarks.
+                </p>
+                <div class="project-tags">
                     <span>Verilog</span>
                     <span>ModelSim</span>
                     <span>Datapath Design</span>
                     <span>ISA</span>
                 </div>
             </div>
-            
-            <div class="project-card">
-                <h3>UVM Verification of an RTC Clock-Generation Circuit</h3>
-                <p>Built a Universal Verification Methodology (UVM) testbench to verify a submodule of a Real-Time Clock (RTC) clock-generation circuit, implementing agents, drivers, monitors, and scoreboards.</p>
-                <div class="tech-tags">
-                    <span>SystemVerilog</span>
-                    <span>UVM</span>
-                    <span>Verification</span>
-                </div>
-            </div>
-        </section>
-        
-        <!-- ZYNQ PROJECTS -->
-        <section>
-            <h2>FPGA & Hardware/Software Co-Design (Zynq SoC)</h2>
-            
+
             <div class="project-card">
                 <h3>Hardware-Accelerated Edge Detection on Zynq SoC</h3>
-                <p>Engineered a real-time image-processing system on a Xilinx Zynq-7000 SoC. Implemented the Sobel edge-detection algorithm in hardware (PL) and a bare-metal C application on the PS to manage the camera interface and data flow.</p>
-                <div class="tech-tags">
+                <p>
+                    Engineered a real-time image-processing system on a Xilinx Zynq-7000 SoC. Implemented the Sobel edge-detection algorithm in hardware (PL) and a bare-metal C application on the PS to manage the camera interface and data flow.
+                </p>
+                <div class="project-tags">
                     <span>Zynq-7000</span>
                     <span>AXI</span>
                     <span>Bare-metal C</span>
                     <span>Image Processing</span>
                 </div>
             </div>
-            
+
             <div class="project-card">
-                <h3>PS-PL Accelerated Waveform Generator on Zynq SoC</h3>
-                <p>Engineered a Zynq SoC hardware/software co-design with a custom PL IP for waveform acceleration, controlled by a bare-metal PS application via an interrupt-driven BRAM interface. Debugged AXI transactions using Vivado ILA.</p>
-                <div class="tech-tags">
-                    <span>Zynq-7000</span>
-                    <span>BRAM</span>
-                    <span>Interrupts</span>
-                    <span>Vivado ILA</span>
+                <h3>UVM Verification of an RTC Clock-Generation Circuit</h3>
+                <p>
+                    Built a Universal Verification Methodology (UVM) testbench to verify a submodule of a Real-Time Clock (RTC) clock-generation circuit, implementing agents, drivers, monitors, and scoreboards.
+                </p>
+                <div class="project-tags">
+                    <span>SystemVerilog</span>
+                    <span>UVM</span>
+                    <span>Verification</span>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- EXPERIENCE -->
-        <section>
-            <h2>Research & Work Experience</h2>
-            
+    <!-- EXPERIENCE -->
+    <section id="experience">
+        <div class="container">
+            <h2>Experience</h2>
+
             <div class="timeline-item">
-                <div class="timeline-header">
-                    <span class="timeline-title">Undergraduate Researcher — Power Electronics Laboratory</span>
-                    <span class="timeline-date">Oct 2025 – Aug 2026</span>
+                <div class="item-header">
+                    <span class="item-title">Undergraduate Researcher — Power Electronics Laboratory</span>
+                    <span class="item-date">Oct 2025 – Aug 2026</span>
                 </div>
-                <div class="timeline-subtitle">Sharif University of Technology | Supervisor: Dr. Mostafa Zarghani</div>
+                <div class="item-subtitle">Sharif University of Technology | Supervisor: Dr. Mostafa Zarghani</div>
                 <ul>
                     <li>Designed and built a real-time digital monitoring system for pulsed power supplies using digital signal processing.</li>
                     <li>Designed the system to identify the number of failed parallel switches and request replacement before they reached a critical limit.</li>
@@ -338,95 +438,91 @@
             </div>
 
             <div class="timeline-item">
-                <div class="timeline-header">
-                    <span class="timeline-title">Board Design and Development</span>
-                    <span class="timeline-date">Summer 2025</span>
+                <div class="item-header">
+                    <span class="item-title">Board Design and Development</span>
+                    <span class="item-date">Summer 2025</span>
                 </div>
-                <div class="timeline-subtitle">Tavan Tadbir Fanavar Co., Shiraz, Iran</div>
+                <div class="item-subtitle">Tavan Tadbir Fanavar Co., Shiraz, Iran</div>
                 <ul>
                     <li>Designed a fully isolated interface board for communication in high-noise industrial environments.</li>
                 </ul>
             </div>
-        </section>
 
-        <!-- TEACHING -->
-        <section>
-            <h2>Teaching Experience</h2>
-            
             <div class="timeline-item">
-                <div class="timeline-header">
-                    <span class="timeline-title">Teaching Assistant — ASIC/FPGA Problem-Solving</span>
-                    <span class="timeline-date">Jul 2026 – Aug 2026</span>
+                <div class="item-header">
+                    <span class="item-title">Teaching Assistant — ASIC/FPGA Problem-Solving</span>
+                    <span class="item-date">Jul 2026 – Aug 2026</span>
                 </div>
-                <div class="timeline-subtitle">Sharif University of Technology</div>
+                <div class="item-subtitle">Sharif University of Technology</div>
                 <ul>
                     <li>Held regular problem-solving sessions and mentored five groups through a full implementation project.</li>
                 </ul>
             </div>
 
             <div class="timeline-item">
-                <div class="timeline-header">
-                    <span class="timeline-title">Lab Assistant — Computer Architecture</span>
-                    <span class="timeline-date">Jul 2025 – Aug 2025</span>
+                <div class="item-header">
+                    <span class="item-title">Lab Assistant — Computer Architecture</span>
+                    <span class="item-date">Jul 2025 – Aug 2025</span>
                 </div>
-                <div class="timeline-subtitle">Sharif University of Technology | Dr. Movahedin's Laboratory</div>
+                <div class="item-subtitle">Sharif University of Technology | Dr. Movahedin's Laboratory</div>
                 <ul>
                     <li>Provided weekly guidance to students on MIPS architecture and Verilog implementation.</li>
                 </ul>
             </div>
-            
-            <div class="timeline-item">
-                <div class="timeline-header">
-                    <span class="timeline-title">Teaching Assistant — Theory of Electrical Circuits</span>
-                    <span class="timeline-date">Feb 2024 – Jun 2024</span>
-                </div>
-                <div class="timeline-subtitle">Sharif University of Technology | Dr. Zarghani</div>
-            </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- SKILLS -->
-        <section>
+    <!-- SKILLS -->
+    <section id="skills">
+        <div class="container">
             <h2>Technical Skills</h2>
-            
-            <div class="skill-category">Hardware & Lab Skills</div>
-            <div class="skills-list">
-                <span>FPGA (Zynq)</span>
-                <span>PCB Design (Altium)</span>
-                <span>MIPS Architecture</span>
-                <span>STM32</span>
-                <span>ESP32</span>
-                <span>Sensor Integration</span>
+            <div class="skills-grid">
+                <div class="skill-category">
+                    <h4>Hardware & Lab</h4>
+                    <div class="skill-list">
+                        <span>FPGA (Zynq)</span>
+                        <span>PCB Design (Altium)</span>
+                        <span>MIPS Architecture</span>
+                        <span>STM32</span>
+                        <span>ESP32</span>
+                        <span>Sensor Integration</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h4>Languages & HDLs</h4>
+                    <div class="skill-list">
+                        <span>Verilog / SystemVerilog</span>
+                        <span>C / C++</span>
+                        <span>Python</span>
+                        <span>MATLAB</span>
+                        <span>MIPS Assembly</span>
+                        <span>x86 Assembly</span>
+                        <span>Java / C# / JS</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h4>Software & Tools</h4>
+                    <div class="skill-list">
+                        <span>Xilinx Vivado</span>
+                        <span>ModelSim</span>
+                        <span>SPICE</span>
+                        <span>Proteus</span>
+                        <span>Altera</span>
+                        <span>Linux</span>
+                        <span>LaTeX</span>
+                        <span>Git</span>
+                    </div>
+                </div>
             </div>
+        </div>
+    </section>
 
-            <div class="skill-category">Languages & HDLs</div>
-            <div class="skills-list">
-                <span>Verilog / SystemVerilog</span>
-                <span>C / C++</span>
-                <span>Python</span>
-                <span>MATLAB</span>
-                <span>MIPS Assembly</span>
-                <span>x86 Assembly</span>
-                <span>Java / C# / JS</span>
-            </div>
-
-            <div class="skill-category">Software & Tools</div>
-            <div class="skills-list">
-                <span>Xilinx Vivado</span>
-                <span>ModelSim</span>
-                <span>SPICE</span>
-                <span>Proteus</span>
-                <span>Altera</span>
-                <span>Linux</span>
-                <span>LaTeX</span>
-                <span>Git</span>
-            </div>
-        </section>
-
-        <!-- FOOTER -->
-        <footer>
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
             &copy; 2026 Reza Nazariye. Built with GitHub Pages.
-        </footer>
-    </div>
+        </div>
+    </footer>
 
 </body>
 </html>
