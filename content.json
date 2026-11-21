@@ -12,8 +12,12 @@
     "cvUrl": "CV.pdf"
   },
   "about": {
-    "body": "I'm an electrical engineer focused on digital design, FPGA systems, and embedded hardware. I'm most interested in the point where hardware and software meet: writing Verilog for an FPGA, then driving it from bare-metal C on an ARM processor, or building a Linux service around a camera.\n\nMy research in the Power Electronics Laboratory showed me what it takes to build systems that work in the real world, where a monitoring design has to hold up under noise and component failure. Teaching has been just as important: over several semesters I have helped students through problem sets and full implementation projects, and explaining a topic has taught me as much as learning it.\n\nOutside engineering: write a few lines here about what you enjoy, what you read, or what keeps you busy.",
-    "interests": []
+    "body": "I'm an electrical engineer focused on digital design, FPGA systems, and embedded hardware. I'm most interested in the point where hardware and software meet: writing Verilog for an FPGA, then driving it from bare-metal C on an ARM processor, or building a Linux service around a camera.\n\nMy research in the Power Electronics Laboratory showed me what it takes to build systems that work in the real world, where a monitoring design has to hold up under noise and component failure. Teaching has been just as important: over several semesters I have helped students through problem sets and full implementation projects, and explaining a topic has taught me as much as learning it.\n\nI'm really into Persian poetry. \nI also have a 3D printer, my dear friend, a keytech alpha 20. The act of making new useful things locally, give me joy.",
+    "interests": [
+      "poetry",
+      "photography",
+      "3D printing"
+    ]
   },
   "links": [
     {
