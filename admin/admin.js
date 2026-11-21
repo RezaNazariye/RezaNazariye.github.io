@@ -109,7 +109,9 @@
       }
     });
     if (!res.ok) {
-      const err = new Error(`${res.status} ${res.statusText}`);
+      let detail = "";
+      try { detail = (await res.json()).message || ""; } catch (_) {}
+      const err = new Error(`${res.status}${detail ? ": " + detail : " " + res.statusText}`);
       err.status = res.status;
       throw err;
     }
@@ -166,6 +168,8 @@
     } catch (err) {
       if (err.status === 409) {
         toast("The file changed somewhere else. Reload the page, then re-apply your edits.", true);
+      } else if (err.status === 403) {
+        toast("GitHub refused the save (403). Your token needs Contents: Read and write on this repository, and the branch must allow direct commits.", true);
       } else {
         toast("Save failed: " + err.message, true);
       }
