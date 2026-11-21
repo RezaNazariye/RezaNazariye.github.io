@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Site editor</title>
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+  <!-- Login -->
+  <div id="login" class="login hidden">
+    <form id="login-form" class="card login-card">
+      <h1>Site editor</h1>
+      <p class="muted">Connect with a GitHub fine-grained token that has <strong>Contents: Read and write</strong> for this repository only.</p>
+      <label class="field"><span>Repository owner</span><input id="owner" required autocomplete="off"></label>
+      <label class="field"><span>Repository name</span><input id="repo" required autocomplete="off"></label>
+      <label class="field"><span>Token</span><input id="token" type="password" required autocomplete="off"></label>
+      <button class="btn primary" type="submit" id="connect">Connect</button>
+      <p id="login-error" class="error"></p>
+    </form>
+  </div>
+
+  <!-- Editor -->
+  <div id="app" class="hidden">
+    <header class="topbar">
+      <strong>Site editor</strong>
+      <span id="status" class="muted"></span>
+      <span class="spacer"></span>
+      <a id="view-site" target="_blank" rel="noopener">View site ↗</a>
+      <a id="view-stats" target="_blank" rel="noopener" class="hidden">Analytics ↗</a>
+      <button id="save" class="btn primary" type="button" disabled>Save &amp; publish</button>
+      <button id="logout" class="btn" type="button">Log out</button>
+    </header>
+    <div class="layout">
+      <nav id="tabs" class="tabs" aria-label="Sections"></nav>
+      <main id="panel" class="panel"></main>
+    </div>
+  </div>
+
+  <div id="toast" class="toast hidden" role="status"></div>
+  <script src="admin.js"></script>
+</body>
+</html>
