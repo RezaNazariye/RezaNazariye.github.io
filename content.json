@@ -4,23 +4,49 @@
   },
   "profile": {
     "name": "Reza Nazariye",
-    "title": "Hardware Engineer",
+    "title": "",
     "intro": "M.Sc. student in Electrical Engineering (Digital Electronics) at Sharif University of Technology. I work on digital design, FPGA systems, and embedded hardware.",
     "email": "you@example.com",
     "location": "",
     "cvUrl": ""
   },
   "links": [
-    { "label": "GitHub", "url": "https://github.com/rezanazariye" },
-    { "label": "LinkedIn", "url": "" },
-    { "label": "Google Scholar", "url": "" }
+    {
+      "label": "GitHub",
+      "url": "https://github.com/rezanazariye"
+    },
+    {
+      "label": "LinkedIn",
+      "url": ""
+    },
+    {
+      "label": "Google Scholar",
+      "url": ""
+    }
   ],
   "stats": [
-    { "value": "0", "label": "Publications" },
-    { "value": "0", "label": "Projects" },
-    { "value": "2022", "label": "Started engineering" }
+    {
+      "value": "0",
+      "label": "Publications"
+    },
+    {
+      "value": "0",
+      "label": "Projects"
+    },
+    {
+      "value": "2022",
+      "label": "Started engineering"
+    }
   ],
-  "skills": ["Verilog", "Vivado", "Zynq FPGA", "CUDA", "STM32", "ESP32", "PCB Design"],
+  "skills": [
+    "Verilog",
+    "Vivado",
+    "Zynq FPGA",
+    "CUDA",
+    "STM32",
+    "ESP32",
+    "PCB Design"
+  ],
   "cv": [
     {
       "title": "M.Sc. in Electrical Engineering (Digital Electronics)",
@@ -74,7 +100,10 @@
       "name": "Your project name",
       "description": "Short description of what the project does and why it matters.",
       "link": "",
-      "stack": ["Verilog", "FPGA"]
+      "stack": [
+        "Verilog",
+        "FPGA"
+      ]
     }
   ]
 }
