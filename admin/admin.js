@@ -3,30 +3,47 @@
 
   const $ = (sel) => document.querySelector(sel);
 
+  const CV_CATEGORIES = ["Education", "Research", "Work", "Teaching", "Other"];
+  const ICONS = ["github", "linkedin", "email", "instagram", "x", "telegram", "scholar", "other"];
+
   /* ----------------------------------------------------------------
      Schema: describes each section of content.json and its form.
-     kind "object": one set of fields. kind "list": repeatable items.
-     kind "tags": a comma-separated list of strings. kind "files": uploads.
+     object: one set of fields. list: repeatable items.
+     Field types: text (default), textarea, email, url, tags, select, image.
      ---------------------------------------------------------------- */
   const SECTIONS = [
     { key: "profile", label: "Profile", kind: "object", fields: [
       { key: "name", label: "Name" },
       { key: "title", label: "Title" },
-      { key: "intro", label: "Intro", type: "textarea" },
-      { key: "email", label: "Email", type: "email" },
+      { key: "intro", label: "Short intro (top of the page)", type: "textarea" },
       { key: "location", label: "Location" },
-      { key: "cvUrl", label: "CV file URL", type: "url", hint: "Upload your CV in the Files tab, then paste the URL here." }
+      { key: "email", label: "Email", type: "email" },
+      { key: "photo", label: "Photo", type: "image", hint: "PNG, JPG, SVG or WebP. Leave empty to show your initials." },
+      { key: "cvUrl", label: "CV file", type: "url", hint: "For example CV.pdf. Upload it in the Files tab first." }
+    ]},
+    { key: "about", label: "About", kind: "object", fields: [
+      { key: "body", label: "About me", type: "textarea", hint: "Separate paragraphs with a blank line. Write about engineering and beyond." },
+      { key: "interests", label: "Interests", type: "tags", hint: "Comma separated, for example Photography, Chess, Running." }
     ]},
     { key: "links", label: "Social links", kind: "list", titleKey: "label", fields: [
       { key: "label", label: "Label" },
-      { key: "url", label: "URL", type: "url" }
+      { key: "url", label: "URL", type: "url", hint: "For email, use mailto:you@example.com" },
+      { key: "icon", label: "Icon", type: "select", options: ICONS }
     ]},
     { key: "stats", label: "Stats", kind: "list", titleKey: "label", fields: [
       { key: "value", label: "Value" },
       { key: "label", label: "Label" }
     ]},
-    { key: "skills", label: "Skills", kind: "tags", help: "Separate skills with commas." },
+    { key: "honors", label: "Honors", kind: "list", titleKey: "title", fields: [
+      { key: "title", label: "Honor" },
+      { key: "year", label: "Year" }
+    ]},
+    { key: "skills", label: "Skills", kind: "list", titleKey: "group", fields: [
+      { key: "group", label: "Group, for example Hardware" },
+      { key: "items", label: "Skills", type: "tags", hint: "Comma separated." }
+    ]},
     { key: "cv", label: "CV", kind: "list", titleKey: "title", fields: [
+      { key: "category", label: "Section", type: "select", options: CV_CATEGORIES },
       { key: "title", label: "Title" },
       { key: "institution", label: "Institution" },
       { key: "dateStart", label: "Start" },
@@ -36,22 +53,30 @@
     { key: "research", label: "Research", kind: "list", titleKey: "title", fields: [
       { key: "title", label: "Title" },
       { key: "coauthors", label: "Co-authors" },
-      { key: "status", label: "Status", hint: "For example: Published, Working paper, Draft." },
+      { key: "status", label: "Status", hint: "For example Published, Working paper, Lab project." },
       { key: "abstract", label: "Abstract", type: "textarea" },
       { key: "pdfUrl", label: "PDF URL", type: "url" },
       { key: "codeUrl", label: "Code URL", type: "url" }
     ]},
     { key: "teaching", label: "Teaching", kind: "list", titleKey: "title", fields: [
       { key: "title", label: "Course" },
-      { key: "semester", label: "Semester" },
+      { key: "semester", label: "Semester or dates" },
       { key: "description", label: "Description", type: "textarea" },
       { key: "materialsUrl", label: "Materials URL", type: "url" }
     ]},
     { key: "projects", label: "Projects", kind: "list", titleKey: "name", fields: [
       { key: "name", label: "Name" },
+      { key: "image", label: "Image", type: "image", hint: "Optional. PNG, JPG, SVG or WebP." },
       { key: "description", label: "Description", type: "textarea" },
-      { key: "link", label: "Link", type: "url" },
-      { key: "stack", label: "Tech stack", type: "tags", hint: "Separate with commas." }
+      { key: "repo", label: "GitHub repository", hint: "owner/name. Adds a Code link, a star count and a like button." },
+      { key: "link", label: "Demo or other link", type: "url" },
+      { key: "stack", label: "Tech stack", type: "tags", hint: "Comma separated." }
+    ]},
+    { key: "team", label: "Team", kind: "list", titleKey: "name", fields: [
+      { key: "name", label: "Name" },
+      { key: "role", label: "Role" },
+      { key: "photo", label: "Photo", type: "image" },
+      { key: "url", label: "Profile link", type: "url" }
     ]},
     { key: "analytics", label: "Analytics", kind: "object", fields: [
       { key: "goatcounter", label: "GoatCounter code", hint: "The part before .goatcounter.com. Leave empty to turn tracking off." }
@@ -82,7 +107,7 @@
     return node;
   }
 
-  /* ---------- Base64 helpers that handle UTF-8 correctly ---------- */
+  /* ---------- Base64 helpers that handle UTF-8 and large files ---------- */
   function bytesToB64(bytes) {
     let s = "";
     for (let i = 0; i < bytes.length; i += 0x8000) {
@@ -131,24 +156,26 @@
     state.repo = repo.trim();
     state.token = token.trim();
 
-    const info = await api("");
-    if (info.permissions && !info.permissions.push) {
-      throw new Error("This token cannot write to the repository. Give it Contents: Read and write.");
-    }
+    await api("");  // checks the token can see the repository
 
     const file = await api(`contents/content.json?ref=${state.branch}`);
     state.sha = file.sha;
-    const data = JSON.parse(decodeText(file.content));
-    state.data = withDefaults(data);
+    state.data = withDefaults(JSON.parse(decodeText(file.content)));
     state.dirty = false;
   }
 
   function withDefaults(d) {
     d.profile = d.profile || {};
+    d.about = d.about || { body: "", interests: [] };
     d.analytics = d.analytics || { goatcounter: "" };
-    ["links", "stats", "skills", "cv", "research", "teaching", "projects"].forEach((k) => {
+    ["links", "stats", "honors", "cv", "research", "teaching", "projects", "team"].forEach((k) => {
       if (!Array.isArray(d[k])) d[k] = [];
     });
+    if (!Array.isArray(d.skills)) d.skills = [];
+    // Older files stored skills as one flat list of strings. Convert it to a group.
+    if (d.skills.length && typeof d.skills[0] === "string") {
+      d.skills = [{ group: "Skills", items: d.skills }];
+    }
     return d;
   }
 
@@ -179,10 +206,10 @@
     }
   }
 
-  /* ---------- Uploads (goes to files/ in the repo) ---------- */
-  async function uploadFile(file) {
+  /* ---------- Uploads. Returns the path inside the repo, e.g. images/photo.jpg ---------- */
+  async function uploadFile(file, folder) {
     const name = file.name.toLowerCase().replace(/[^a-z0-9._-]+/g, "-");
-    const path = `files/${name}`;
+    const path = `${folder}/${name}`;
 
     let sha = null;
     try {
@@ -201,7 +228,7 @@
         ...(sha ? { sha } : {})
       })
     });
-    return `${siteBase()}/${path}`;
+    return path;
   }
 
   /* ---------- UI state ---------- */
@@ -231,7 +258,7 @@
     el.textContent = msg;
     el.className = "toast" + (isError ? " error" : "");
     clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => el.classList.add("hidden"), 4200);
+    toastTimer = setTimeout(() => el.classList.add("hidden"), 4500);
   }
 
   function renderTabs() {
@@ -253,27 +280,35 @@
         field(f, d[sec.key][f.key], (v) => { d[sec.key][f.key] = v; touch(); })));
     } else if (sec.kind === "list") {
       body = listForm(sec, d[sec.key]);
-    } else if (sec.kind === "tags") {
-      body = field({ label: "Skills", type: "tags" }, d[sec.key], (v) => { d[sec.key] = v; touch(); });
     } else {
       body = filesForm();
     }
     $("#panel").replaceChildren(
       h("h2", { text: sec.label }),
-      sec.help ? h("p", { class: "muted", text: sec.help }) : null,
       body
     );
   }
 
-  /* ---------- Form builders ---------- */
+  /* ---------- Field builders ---------- */
   function field(f, value, onChange) {
-    const isTags = f.type === "tags";
-    const input = f.type === "textarea"
-      ? h("textarea", { rows: 3 })
-      : h("input", { type: f.type === "email" || f.type === "url" ? f.type : "text" });
+    if (f.type === "image") return imageField(f, value, onChange);
 
+    let input;
+    if (f.type === "textarea") {
+      input = h("textarea", { rows: 3 });
+    } else if (f.type === "select") {
+      input = h("select");
+      const blank = document.createElement("option");
+      blank.value = "";
+      blank.textContent = "—";
+      input.append(blank, ...(f.options || []).map((o) => h("option", { value: o, text: o })));
+    } else {
+      input = h("input", { type: f.type === "email" || f.type === "url" ? f.type : "text" });
+    }
+
+    const isTags = f.type === "tags";
     input.value = isTags ? (value || []).join(", ") : (value ?? "");
-    input.addEventListener("input", () => {
+    input.addEventListener(f.type === "select" ? "change" : "input", () => {
       onChange(isTags
         ? input.value.split(",").map((s) => s.trim()).filter(Boolean)
         : input.value);
@@ -283,6 +318,49 @@
       h("span", { text: f.label }),
       f.hint ? h("small", { class: "muted", text: f.hint }) : null,
       input);
+  }
+
+  /* Image field: a path or URL, a preview, and an upload button that stores the file in images/. */
+  function imageField(f, value, onChange) {
+    const input = h("input", { type: "text", placeholder: "images/photo.jpg" });
+    input.value = value ?? "";
+
+    const thumb = h("img", { class: "thumb" });
+    const showThumb = () => {
+      const v = input.value.trim();
+      thumb.classList.toggle("hidden", !v);
+      if (v) thumb.src = /^https?:/.test(v) ? v : `${siteBase()}/${v}`;
+    };
+
+    input.addEventListener("input", () => {
+      onChange(input.value.trim());
+      showThumb();
+    });
+
+    const picker = h("input", { type: "file", accept: "image/*" });
+    picker.addEventListener("change", async () => {
+      const file = picker.files[0];
+      if (!file) return;
+      toast("Uploading image…");
+      try {
+        const path = await uploadFile(file, "images");
+        input.value = path;
+        onChange(path);
+        showThumb();
+        toast("Image uploaded. Save to publish it.");
+      } catch (err) {
+        toast("Upload failed: " + err.message, true);
+      } finally {
+        picker.value = "";
+      }
+    });
+
+    showThumb();
+    return h("label", { class: "field" },
+      h("span", { text: f.label }),
+      f.hint ? h("small", { class: "muted", text: f.hint }) : null,
+      h("div", { class: "image-row" }, thumb, input),
+      picker);
   }
 
   function blankItem(sec) {
@@ -296,6 +374,7 @@
 
     items.forEach((item, i) => {
       const title = h("strong", { text: item[sec.titleKey] || `Item ${i + 1}` });
+
       const move = (dir) => {
         const j = i + dir;
         if (j < 0 || j >= items.length) return;
@@ -334,7 +413,7 @@
   }
 
   function filesForm() {
-    const picker = h("input", { type: "file", accept: ".pdf,.png,.jpg,.jpeg,.webp,.txt,.bib" });
+    const picker = h("input", { type: "file", accept: ".pdf,.png,.jpg,.jpeg,.svg,.webp,.txt,.bib" });
     const out = h("div", { class: "muted" });
     const go = h("button", {
       class: "btn primary", type: "button", text: "Upload",
@@ -344,16 +423,19 @@
         go.disabled = true;
         out.textContent = "Uploading…";
         try {
-          const url = await uploadFile(file);
+          const path = await uploadFile(file, "files");
+          const url = `${siteBase()}/${path}`;
           out.replaceChildren(
-            h("div", { text: "Uploaded. Public URL:" }),
+            h("div", { text: "Uploaded. Use this path, for example in the CV file field:" }),
+            h("code", { text: path }),
+            h("div", { text: "Full public URL:", style: "margin-top:8px" }),
             h("code", { text: url }),
             h("div", { style: "margin-top:8px" },
               h("button", {
-                class: "btn small", type: "button", text: "Copy URL",
-                onclick: () => navigator.clipboard.writeText(url).then(() => toast("URL copied."))
+                class: "btn small", type: "button", text: "Copy path",
+                onclick: () => navigator.clipboard.writeText(path).then(() => toast("Path copied."))
               })),
-            h("p", { class: "muted", text: "Paste the URL into a CV, research, teaching, or project field, then save. The file goes live after the next Pages build." })
+            h("p", { class: "muted", text: "Images go in the images/ folder through the field's own upload button." })
           );
         } catch (err) {
           out.textContent = "Upload failed: " + err.message;
@@ -363,7 +445,7 @@
       }
     });
     return h("div", null,
-      h("p", { class: "muted", text: "Files are stored in the files/ folder of the repository. Use short file names without spaces." }),
+      h("p", { class: "muted", text: "Files go to the files/ folder of the repository, such as your CV or a paper PDF. Use short names without spaces." }),
       h("div", { style: "margin-bottom:12px" }, picker),
       go,
       h("div", { style: "margin-top:14px" }, out));
@@ -421,10 +503,9 @@
 
   /* ---------- Start ---------- */
   (async function start() {
-    const defaultOwner = location.hostname.endsWith(".github.io") ? location.hostname.split(".")[0] : "";
-    const defaultRepo = location.hostname.endsWith(".github.io") ? location.hostname : "";
-    $("#owner").value = localStorage.getItem("gh_owner") || defaultOwner;
-    $("#repo").value = localStorage.getItem("gh_repo") || defaultRepo;
+    const onGithubIo = location.hostname.endsWith(".github.io");
+    $("#owner").value = localStorage.getItem("gh_owner") || (onGithubIo ? location.hostname.split(".")[0] : "");
+    $("#repo").value = localStorage.getItem("gh_repo") || (onGithubIo ? location.hostname : "");
 
     const token = sessionStorage.getItem("gh_token");
     if (!token) return showLogin();

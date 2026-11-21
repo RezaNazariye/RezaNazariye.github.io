@@ -22,14 +22,39 @@
     return node;
   }
 
+  const slug = (s) => String(s).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+  const initials = (name = "") =>
+    name.split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0]).join("").toUpperCase();
+  const paragraphs = (text = "") => text.split(/\n\s*\n/).map((s) => s.trim()).filter(Boolean);
+  const isMail = (url) => /^mailto:/i.test(url);
+
+  /* Image with a fallback: no file set, or a file that fails to load, shows initials instead. */
+  function media(src, alt, fallback, cls) {
+    const placeholder = () => h("span", { class: "media-fallback", "aria-hidden": "true", text: fallback });
+    const wrap = h("div", { class: "media " + (cls || "") });
+    wrap.append(src
+      ? h("img", { src, alt, loading: "lazy", onerror: (e) => e.currentTarget.replaceWith(placeholder()) })
+      : placeholder());
+    return wrap;
+  }
+
+  const ICON_TEXT = { github: "GH", linkedin: "in", email: "@", instagram: "IG", x: "X", telegram: "TG", scholar: "GS" };
+
+  function chip(l) {
+    const attrs = isMail(l.url) ? {} : { target: "_blank", rel: "noopener noreferrer" };
+    return h("a", {
+      class: "chip", href: l.url, ...attrs,
+      "data-track": "social-click", "data-title": l.label
+    }, h("span", { class: "chip-icon", "aria-hidden": "true", text: ICON_TEXT[l.icon] || "↗" }), l.label);
+  }
+
   const link = (url, label, track, title) =>
     url
       ? h("a", { href: url, target: "_blank", rel: "noopener noreferrer", "data-track": track, "data-title": title, text: label })
       : null;
 
   const section = (id, title, ...kids) =>
-    h("section", { id },
-      h("div", { class: "wrap" }, h("h2", { text: title }), ...kids));
+    h("section", { id }, h("div", { class: "wrap" }, h("h2", { text: title }), ...kids));
 
   /* ---------- Analytics (GoatCounter, cookie-free) ---------- */
   function loadAnalytics(code) {
@@ -41,7 +66,7 @@
     document.head.append(s);
   }
 
-  /* Count a named event such as a CV download. Pageviews are counted automatically. */
+  /* Counts a named event such as a CV download or a like. Pageviews are counted automatically. */
   function track(name, title) {
     try {
       if (window.goatcounter && typeof window.goatcounter.count === "function") {
@@ -73,6 +98,7 @@
     setMeta("description", p.intro);
     setMeta("og:title", document.title, "property");
     setMeta("og:description", p.intro, "property");
+    if (p.photo) setMeta("og:image", new URL(p.photo, location.href).href, "property");
 
     const ld = document.createElement("script");
     ld.type = "application/ld+json";
@@ -82,48 +108,94 @@
       name: p.name,
       jobTitle: p.title,
       url: location.origin + location.pathname,
-      sameAs: (d.links || []).map((l) => l.url).filter(Boolean)
+      sameAs: (d.links || []).map((l) => l.url).filter((u) => u && !isMail(u))
     });
     document.head.append(ld);
   }
 
-  /* ---------- Sections ---------- */
+  /* ---------- Sections. Each returns null when it has no content, so it is hidden. ---------- */
   function renderHero(d) {
     const p = d.profile;
+    const socials = (d.links || []).filter((l) => l.url);
+    const stats = d.stats || [];
     return h("section", { class: "hero" },
       h("div", { class: "wrap" },
-        h("h1", { text: p.name }),
-        h("div", { class: "sub", text: p.title }),
-        h("p", { text: p.intro }),
-        h("div", { class: "btns" },
-          p.cvUrl ? h("a", { class: "btn primary", href: p.cvUrl, target: "_blank", rel: "noopener", "data-track": "download-cv", text: "Download CV" }) : null,
-          h("a", { class: p.cvUrl ? "btn" : "btn primary", href: "#contact", text: "Get in touch" }),
-          h("a", { class: "btn ghost", href: "#research", text: "Research →" })
-        ),
-        (d.links || []).some((l) => l.url)
-          ? h("div", { class: "chips" }, d.links.map((l) => link(l.url, l.label, "social-click", l.label)))
-          : null,
-        h("div", { class: "stats" },
-          (d.stats || []).map((s) => h("div", { class: "stat reveal" }, h("b", { text: s.value }), h("span", { text: s.label }))))
-      ));
+        h("div", { class: "hero-inner" },
+          media(p.photo, p.name, initials(p.name), "avatar"),
+          h("div", null,
+            h("h1", { text: p.name }),
+            h("div", { class: "sub", text: p.title }),
+            p.location ? h("div", { class: "muted small", text: p.location }) : null,
+            h("p", { text: p.intro }),
+            h("div", { class: "btns" },
+              p.cvUrl ? h("a", { class: "btn primary", href: p.cvUrl, target: "_blank", rel: "noopener", "data-track": "download-cv", text: "Download CV" }) : null,
+              h("a", { class: p.cvUrl ? "btn" : "btn primary", href: "#contact", text: "Get in touch" })),
+            socials.length ? h("div", { class: "chips" }, socials.map((l) => chip(l))) : null)),
+        stats.length
+          ? h("div", { class: "stats" }, stats.map((s) =>
+              h("div", { class: "stat reveal" }, h("b", { text: s.value }), h("span", { text: s.label }))))
+          : null));
   }
 
+  function renderAbout(d) {
+    const a = d.about || {};
+    const paras = paragraphs(a.body);
+    const interests = a.interests || [];
+    if (!paras.length && !interests.length) return null;
+    return section("about", "About",
+      paras.length ? h("div", { class: "prose" }, paras.map((t) => h("p", { text: t }))) : null,
+      interests.length
+        ? h("div", { class: "interests" },
+            h("h3", { class: "subhead", text: "Interests" }),
+            h("div", null, interests.map((t) => h("span", { class: "tag", text: t }))))
+        : null);
+  }
+
+  function renderHonors(d) {
+    const items = d.honors || [];
+    if (!items.length) return null;
+    return section("honors", "Honors",
+      h("ul", { class: "honor-list" }, items.map((x) =>
+        h("li", { class: "reveal" },
+          h("span", { class: "honor-title", text: x.title }),
+          x.year ? h("span", { class: "badge", text: x.year }) : null))));
+  }
+
+  const CV_ORDER = ["Education", "Research", "Work", "Teaching"];
+
   function renderCV(d) {
+    const entries = d.cv || [];
+    const groups = [...CV_ORDER, "Other"]
+      .map((c) => [c, entries.filter((e) => (e.category || "Other") === c)])
+      .filter(([, items]) => items.length);
+    const skills = d.skills || [];
+    if (!groups.length && !skills.length) return null;
+
     return section("cv", "CV",
-      h("div", { class: "timeline" },
-        (d.cv || []).map((e) =>
-          h("div", { class: "tl-item reveal" },
-            h("div", { class: "tl-date", text: [e.dateStart, e.dateEnd].filter(Boolean).join(" – ") }),
-            h("h3", { text: e.title }),
-            h("div", { class: "org", text: e.institution }),
-            e.description ? h("p", { class: "muted", text: e.description }) : null))),
-      h("h3", { class: "subhead", text: "Skills" }),
-      h("div", null, (d.skills || []).map((s) => h("span", { class: "tag", text: s }))));
+      groups.map(([name, items]) =>
+        h("div", null,
+          h("h3", { class: "subhead", text: name }),
+          h("div", { class: "timeline" }, items.map((e) =>
+            h("div", { class: "tl-item reveal" },
+              h("div", { class: "tl-date", text: [e.dateStart, e.dateEnd].filter(Boolean).join(" – ") }),
+              h("h3", { text: e.title }),
+              e.institution ? h("div", { class: "org", text: e.institution }) : null,
+              e.description ? h("p", { class: "muted", text: e.description }) : null))))),
+      skills.length
+        ? h("div", null,
+            h("h3", { class: "subhead", text: "Skills" }),
+            h("div", { class: "skill-groups" }, skills.map((g) =>
+              h("div", { class: "skill-group" },
+                h("div", { class: "muted small", text: g.group }),
+                h("div", null, (g.items || []).map((t) => h("span", { class: "tag", text: t })))))))
+        : null);
   }
 
   function renderResearch(d) {
+    const items = d.research || [];
+    if (!items.length) return null;
     return section("research", "Research",
-      (d.research || []).map((p) =>
+      items.map((p) =>
         h("article", { class: "item reveal" },
           p.status ? h("span", { class: "badge", text: p.status }) : null,
           h("h3", { text: p.title }),
@@ -135,8 +207,10 @@
   }
 
   function renderTeaching(d) {
+    const items = d.teaching || [];
+    if (!items.length) return null;
     return section("teaching", "Teaching",
-      (d.teaching || []).map((t) =>
+      items.map((t) =>
         h("article", { class: "item reveal" },
           t.semester ? h("span", { class: "badge", text: t.semester }) : null,
           h("h3", { text: t.title }),
@@ -144,20 +218,55 @@
           h("div", { class: "item-links" }, link(t.materialsUrl, "Materials", "teaching-materials", t.title)))));
   }
 
+  /* A like is counted as a GoatCounter event (you see it in the dashboard). Each browser can like once. */
+  function projectCard(p) {
+    const key = p.repo || p.name;
+    const liked = () => localStorage.getItem("liked:" + key) === "1";
+
+    const likeBtn = h("button", {
+      class: "like", type: "button",
+      text: liked() ? "♥ Liked" : "♡ Like",
+      disabled: liked()
+    });
+    likeBtn.addEventListener("click", () => {
+      try { localStorage.setItem("liked:" + key, "1"); } catch (_) {}
+      track("like-" + slug(key), "Like: " + p.name);
+      likeBtn.textContent = "♥ Liked";
+      likeBtn.disabled = true;
+    });
+
+    return h("article", { class: "card reveal" },
+      media(p.image, p.name, initials(p.name), "card-media"),
+      h("h3", { text: p.name }),
+      h("p", { text: p.description }),
+      h("div", null, (p.stack || []).map((t) => h("span", { class: "tag", text: t }))),
+      h("div", { class: "card-actions" },
+        p.repo ? h("a", { href: `https://github.com/${p.repo}`, target: "_blank", rel: "noopener noreferrer", "data-track": "project-code", "data-title": p.name, text: "Code" }) : null,
+        link(p.link, "Demo ↗", "project-click", p.name),
+        p.repo ? h("span", { class: "stars muted", "data-repo": p.repo, text: "★" }) : null,
+        likeBtn));
+  }
+
   function renderProjects(d) {
-    return section("projects", "Projects",
-      h("div", { class: "grid" },
-        (d.projects || []).map((a) =>
-          h("div", { class: "card reveal" },
-            h("h3", { text: a.name }),
-            h("p", { text: a.description }),
-            h("div", null, (a.stack || []).map((t) => h("span", { class: "tag", text: t }))),
-            link(a.link, "View project →", "project-click", a.name)))));
+    const items = d.projects || [];
+    if (!items.length) return null;
+    return section("projects", "Projects", h("div", { class: "grid" }, items.map((p) => projectCard(p))));
+  }
+
+  function renderTeam(d) {
+    const items = d.team || [];
+    if (!items.length) return null;
+    return section("team", "Team", h("div", { class: "grid" }, items.map((m) =>
+      h("article", { class: "card reveal" },
+        media(m.photo, m.name, initials(m.name), "avatar avatar-sm"),
+        h("h3", { text: m.name }),
+        m.role ? h("p", { text: m.role }) : null,
+        link(m.url, "Profile ↗", "team-profile", m.name)))));
   }
 
   function renderContact(d) {
     const p = d.profile;
-    const copyBtn = h("button", {
+    const copy = h("button", {
       class: "btn ghost", type: "button", "data-track": "copy-email", text: "Copy email",
       onclick: (e) => {
         if (navigator.clipboard) navigator.clipboard.writeText(p.email).catch(() => {});
@@ -182,32 +291,27 @@
       h("input", { name: "email", type: "email", placeholder: "Your email", required: true, autocomplete: "email" }),
       h("input", { name: "subject", placeholder: "Subject" }),
       h("textarea", { name: "message", placeholder: "Your message", required: true }),
-      h("button", { class: "btn primary", type: "submit", text: "Send message", style: "justify-self:start;cursor:pointer" }));
+      h("button", { class: "btn primary", type: "submit", text: "Send message" }));
 
     return section("contact", "Contact",
       h("p", { class: "muted", text: "Send a message and it opens in your email app." }),
       form,
-      p.email ? h("div", { class: "contact-email" },
-        h("span", { class: "muted", text: "Or email " }),
-        h("a", { href: `mailto:${p.email}`, text: p.email }),
-        copyBtn) : null);
+      p.email
+        ? h("div", { class: "contact-email" },
+            h("span", { class: "muted", text: "Or email " }),
+            h("a", { href: `mailto:${p.email}`, text: p.email }),
+            copy)
+        : null);
   }
 
   function renderFooter(d) {
-    const socials = (d.links || []).filter((l) => l.url)
-      .map((l) => link(l.url, l.label, "social-click", l.label));
     $("#footer").replaceChildren(
       h("div", { class: "foot" },
         h("span", { text: `© ${new Date().getFullYear()} ${d.profile.name}` }),
-        h("span", null, socials)));
+        h("span", null, (d.links || []).filter((l) => l.url).map((l) => chip(l)))));
   }
 
-  /* ---------- Behaviour after render ---------- */
-  function enhance() {
-    document.querySelectorAll(".reveal").forEach((el) => revealObserver.observe(el));
-    document.querySelectorAll("main section[id]").forEach((el) => navObserver.observe(el));
-  }
-
+  /* ---------- Behaviour: reveal on scroll, active nav link, GitHub stars ---------- */
   const revealObserver = "IntersectionObserver" in window
     ? new IntersectionObserver((entries) => entries.forEach((en) => {
         if (en.isIntersecting) { en.target.classList.add("in"); revealObserver.unobserve(en.target); }
@@ -221,6 +325,33 @@
           a.classList.toggle("active", a.getAttribute("href") === "#" + en.target.id));
       }), { rootMargin: "-45% 0px -50% 0px" })
     : { observe() {} };
+
+  function enhance() {
+    document.querySelectorAll(".reveal").forEach((el) => revealObserver.observe(el));
+    document.querySelectorAll("main section[id]").forEach((el) => navObserver.observe(el));
+  }
+
+  /* GitHub's public API gives star counts without a token. Cached per browser session. */
+  async function fillStars() {
+    for (const el of document.querySelectorAll("[data-repo]")) {
+      const repo = el.dataset.repo;
+      const cacheKey = "stars:" + repo;
+      let count = null;
+      try { count = sessionStorage.getItem(cacheKey); } catch (_) {}
+      if (count === null) {
+        try {
+          const res = await fetch(`https://api.github.com/repos/${repo}`, {
+            headers: { Accept: "application/vnd.github+json" }
+          });
+          if (res.ok) {
+            count = String((await res.json()).stargazers_count);
+            try { sessionStorage.setItem(cacheKey, count); } catch (_) {}
+          }
+        } catch (_) {}
+      }
+      if (count !== null) el.textContent = `★ ${count}`;
+    }
+  }
 
   /* ---------- Load and render ---------- */
   async function init() {
@@ -238,16 +369,22 @@
     applyMeta(data);
     loadAnalytics(data.analytics && data.analytics.goatcounter);
 
-    $("#top").replaceChildren(
-      renderHero(data),
-      renderCV(data),
-      renderResearch(data),
-      renderTeaching(data),
-      renderProjects(data),
-      renderContact(data)
-    );
+    const parts = [
+      ["about", "About", renderAbout(data)],
+      ["cv", "CV", renderCV(data)],
+      ["honors", "Honors", renderHonors(data)],
+      ["research", "Research", renderResearch(data)],
+      ["teaching", "Teaching", renderTeaching(data)],
+      ["projects", "Projects", renderProjects(data)],
+      ["team", "Team", renderTeam(data)],
+      ["contact", "Contact", renderContact(data)]
+    ].filter((part) => part[2]);
+
+    $("#links").replaceChildren(...parts.map(([id, label]) => h("a", { href: "#" + id, text: label })));
+    $("#top").replaceChildren(renderHero(data), ...parts.map((part) => part[2]));
     renderFooter(data);
     enhance();
+    fillStars();
   }
 
   /* ---------- Theme toggle ---------- */
@@ -264,18 +401,19 @@
     try { localStorage.setItem("theme", next); } catch (_) {}
   });
 
-  /* ---------- Mobile menu ---------- */
+  /* ---------- Mobile menu (links are created later, so use event delegation) ---------- */
   const burger = $("#burger");
   const menu = $("#links");
   burger.addEventListener("click", () => {
     const open = menu.classList.toggle("open");
     burger.setAttribute("aria-expanded", String(open));
   });
-  menu.querySelectorAll("a").forEach((a) =>
-    a.addEventListener("click", () => {
+  menu.addEventListener("click", (e) => {
+    if (e.target.closest("a")) {
       menu.classList.remove("open");
       burger.setAttribute("aria-expanded", "false");
-    }));
+    }
+  });
 
   init();
 })();
