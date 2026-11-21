@@ -25,6 +25,10 @@
       { key: "body", label: "About me", type: "textarea", hint: "Separate paragraphs with a blank line. Write about engineering and beyond." },
       { key: "interests", label: "Interests", type: "tags", hint: "Comma separated, for example Photography, Chess, Running." }
     ]},
+    { key: "gallery", label: "About photos", kind: "list", titleKey: "caption", help: "Photos shown in a grid at the bottom of the About page.", fields: [
+      { key: "image", label: "Photo", type: "image", hint: "Landscape photos work best. PNG, JPG, SVG or WebP." },
+      { key: "caption", label: "Caption" }
+    ]},
     { key: "links", label: "Social links", kind: "list", titleKey: "label", fields: [
       { key: "label", label: "Label" },
       { key: "url", label: "URL", type: "url", hint: "For email, use mailto:you@example.com" },
@@ -168,7 +172,7 @@
     d.profile = d.profile || {};
     d.about = d.about || { body: "", interests: [] };
     d.analytics = d.analytics || { goatcounter: "" };
-    ["links", "stats", "honors", "cv", "research", "teaching", "projects", "team"].forEach((k) => {
+    ["links", "stats", "honors", "cv", "research", "teaching", "projects", "team", "gallery"].forEach((k) => {
       if (!Array.isArray(d[k])) d[k] = [];
     });
     if (!Array.isArray(d.skills)) d.skills = [];
@@ -285,6 +289,7 @@
     }
     $("#panel").replaceChildren(
       h("h2", { text: sec.label }),
+      sec.help ? h("p", { class: "muted", text: sec.help }) : null,
       body
     );
   }
