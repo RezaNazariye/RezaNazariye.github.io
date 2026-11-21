@@ -2,241 +2,39 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Reza Nazariye | Home</title>
+    <title>Reza Nazariye | Hardware Engineer</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body class="light-mode">
+<body>
     <div id="navbar-placeholder"></div>
 
-    
-<main>
-    <!-- HERO -->
-    <section class="hero-section container" aria-labelledby="hero-name">
-
-        <div class="hero-copy">
-            <p class="eyebrow">ELECTRICAL ENGINEERING · SHARIF UNIVERSITY</p>
-
-            <h1 id="hero-name">Reza Nazariye</h1>
-
-            <h2 id="hero-title">
-                M.Sc. Student in Electrical Engineering
-            </h2>
-
-            <p class="hero-summary">
-                My interests lie in digital VLSI design, computer
-                architecture, FPGA-based computing, and hardware
-                acceleration. I enjoy designing digital systems
-                and exploring the interaction between hardware
-                architecture and efficient computation.
-            </p>
-
-            <div class="hero-focus">
-                <span>Digital VLSI</span>
-                <span>Computer Architecture</span>
-                <span>FPGA Design</span>
-                <span>Hardware Verification</span>
+    <main>
+        <section class="hero container">
+            <h1 id="hero-name" class="reveal"></h1>
+            <h2 id="hero-title" class="reveal"></h2>
+            <p id="hero-bio" class="reveal"></p>
+            <div class="hero-links reveal">
+                <a href="CV.pdf" class="btn" target="_blank">Download CV</a>
+                <a id="link-github" class="social-icon" target="_blank"><i class="fa-brands fa-github"></i></a>
+                <a id="link-linkedin" class="social-icon" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
             </div>
+        </section>
 
-            <div class="hero-links">
-                <a href="CV.pdf"
-                   class="btn btn-primary"
-                   target="_blank"
-                   rel="noopener noreferrer">
-                    Download CV
-                </a>
+        <section class="container section">
+            <h2 class="section-title reveal"><span>01.</span> Academic Highlights</h2>
+            <div class="grid-3" id="highlights-grid"></div>
+        </section>
 
-                <a href="projects.html"
-                   class="btn btn-secondary">
-                    Explore Projects →
-                </a>
+        <section class="container section">
+            <h2 class="section-title reveal"><span>02.</span> Recent Projects</h2>
+            <div class="grid-3" id="featured-projects"></div>
+            <div style="text-align: center; margin-top: 40px;" class="reveal">
+                <a href="projects.html" class="btn">View All Projects</a>
             </div>
-        </div>
-
-        <aside class="hero-aside">
-            <p class="eyebrow">ACADEMIC HIGHLIGHTS</p>
-
-            <div class="highlight-item">
-                <strong>6th</strong>
-                <span>Iranian M.Sc. Entrance Exam · 2026</span>
-            </div>
-
-            <div class="highlight-item">
-                <strong>8th</strong>
-                <span>National Student Olympiad · Electrical Engineering</span>
-            </div>
-
-            <div class="highlight-item">
-                <strong>100th</strong>
-                <span>National University Entrance Exam · 2022</span>
-            </div>
-
-            <div class="highlight-item">
-                <strong>5</strong>
-                <span>ASIC/FPGA project groups mentored</span>
-            </div>
-        </aside>
-
-    </section>
-
-    <!-- RESEARCH INTERESTS -->
-    <section class="home-section container">
-        <div class="section-heading">
-            <p class="eyebrow">AREAS OF INTEREST</p>
-            <h2>Research Interests</h2>
-        </div>
-
-        <div class="interest-grid">
-            <article class="interest-card">
-                <h3>Digital VLSI Design</h3>
-                <p>
-                    Digital circuit design, FPGA architectures,
-                    logic implementation and hardware optimization.
-                </p>
-            </article>
-
-            <article class="interest-card">
-                <h3>Computer Architecture</h3>
-                <p>
-                    Processor design, datapaths, control units
-                    and architectural exploration.
-                </p>
-            </article>
-
-            <article class="interest-card">
-                <h3>Hardware Acceleration</h3>
-                <p>
-                    FPGA-based computation and
-                    hardware/software co-design.
-                </p>
-            </article>
-
-            <article class="interest-card">
-                <h3>Digital Verification</h3>
-                <p>
-                    SystemVerilog, UVM and verification
-                    of digital systems.
-                </p>
-            </article>
-        </div>
-    </section>
-
-    <!-- FEATURED PROJECTS -->
-    <section class="home-section container">
-        <div class="section-heading">
-            <p class="eyebrow">SELECTED TECHNICAL WORK</p>
-            <h2>Featured Projects</h2>
-        </div>
-
-        <div class="featured-projects">
-
-            <article class="project-card">
-                <p class="project-category">FPGA ARCHITECTURE</p>
-                <h3>Custom FPGA Architecture</h3>
-                <p>
-                    Designed a custom FPGA architecture in Verilog,
-                    including CLBs, LUT4s and a routing matrix,
-                    with manual configuration-bitstream generation.
-                </p>
-                <div class="project-tags">
-                    <span>Verilog</span>
-                    <span>FPGA</span>
-                    <span>Architecture</span>
-                </div>
-            </article>
-
-            <article class="project-card">
-                <p class="project-category">COMPUTER ARCHITECTURE</p>
-                <h3>Single-Cycle MIPS Processor</h3>
-                <p>
-                    Implemented a 32-bit MIPS datapath and control
-                    unit, including additional instruction support.
-                </p>
-                <div class="project-tags">
-                    <span>Verilog</span>
-                    <span>MIPS</span>
-                    <span>ModelSim</span>
-                </div>
-            </article>
-
-            <article class="project-card">
-                <p class="project-category">FPGA / SOC</p>
-                <h3>Hardware-Accelerated Edge Detection</h3>
-                <p>
-                    Implemented Sobel image processing on a
-                    Zynq-7000 SoC, combining programmable logic
-                    and bare-metal software.
-                </p>
-                <div class="project-tags">
-                    <span>Zynq-7000</span>
-                    <span>AXI</span>
-                    <span>Sobel</span>
-                </div>
-            </article>
-
-        </div>
-
-        <a href="projects.html" class="section-link">
-            View all projects →
-        </a>
-    </section>
-
-    <!-- EXPERIENCE -->
-    <section class="home-section container">
-        <div class="section-heading">
-            <p class="eyebrow">ACADEMIC & PROFESSIONAL BACKGROUND</p>
-            <h2>Research Experience</h2>
-        </div>
-
-        <article class="timeline-item">
-            <p class="timeline-date">October 2025 – August 2026</p>
-            <h3>Undergraduate Researcher</h3>
-            <p class="text-accent">
-                Power Electronics Laboratory · Sharif University
-            </p>
-            <p>
-                Developed a real-time digital monitoring system
-                for pulsed power supplies, using digital signal
-                processing to monitor parallel-switch performance.
-            </p>
-        </article>
-
-        <article class="timeline-item">
-            <p class="timeline-date">Summer 2025</p>
-            <h3>Board Design and Development</h3>
-            <p class="text-accent">Tavan Tadbir Fanavar Co.</p>
-            <p>
-                Designed an isolated interface board for
-                communication in industrial environments.
-            </p>
-        </article>
-
-        <a href="research.html" class="section-link">
-            More research and experience →
-        </a>
-    </section>
-
-    <!-- TEACHING -->
-    <section class="home-section container">
-        <div class="section-heading">
-            <p class="eyebrow">ACADEMIC ACTIVITIES</p>
-            <h2>Teaching Experience</h2>
-        </div>
-
-        <p class="section-description">
-            Teaching assistant and laboratory experience in
-            ASIC/FPGA design, computer architecture and
-            electrical circuits.
-        </p>
-
-        <a href="teaching.html" class="section-link">
-            View teaching activities →
-        </a>
-    </section>
-
-</main>
-
+        </section>
+    </main>
 
     <div id="footer-placeholder"></div>
     <script src="js/data.js"></script>
