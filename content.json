@@ -4,7 +4,7 @@
   },
   "profile": {
     "name": "Reza Nazariye",
-    "title": "Hardware Engineer",
+    "title": "",
     "intro": "M.Sc. student in Electrical Engineering (Digital Electronics) at Sharif University of Technology. I design digital systems, FPGA architectures, and embedded hardware.",
     "location": "Tehran, Iran",
     "email": "reza.nazariye86@sharif.edu",
@@ -16,25 +16,100 @@
     "interests": []
   },
   "links": [
-    { "label": "GitHub", "url": "https://github.com/RezaNazariye", "icon": "github" },
-    { "label": "Email", "url": "mailto:reza.nazariye86@sharif.edu", "icon": "email" },
-    { "label": "LinkedIn", "url": "", "icon": "linkedin" }
+    {
+      "label": "GitHub",
+      "url": "https://github.com/RezaNazariye",
+      "icon": "github"
+    },
+    {
+      "label": "Email",
+      "url": "mailto:reza.nazariye86@sharif.edu",
+      "icon": "email"
+    },
+    {
+      "label": "LinkedIn",
+      "url": "",
+      "icon": "linkedin"
+    }
   ],
   "stats": [
-    { "value": "6th", "label": "Nationally, M.Sc. entrance exam (2026)" },
-    { "value": "8", "label": "Hardware and embedded projects" },
-    { "value": "3", "label": "Teaching roles" }
+    {
+      "value": "6th",
+      "label": "Nationally, M.Sc. entrance exam (2026)"
+    },
+    {
+      "value": "8",
+      "label": "Hardware and embedded projects"
+    },
+    {
+      "value": "3",
+      "label": "Teaching roles"
+    }
   ],
   "honors": [
-    { "title": "6th place, Iranian National M.Sc. Entrance Exam in Electrical Engineering", "year": "2026 (1405)" },
-    { "title": "8th place, 31st Iranian National Student Olympiad in Electrical Engineering", "year": "" },
-    { "title": "100th nationally, Iranian National University Entrance Exam (Mathematics & Physics)", "year": "2022 (1401)" }
+    {
+      "title": "6th place, Iranian National M.Sc. Entrance Exam in Electrical Engineering",
+      "year": "2026 (1405)"
+    },
+    {
+      "title": "8th place, 31st Iranian National Student Olympiad in Electrical Engineering",
+      "year": ""
+    },
+    {
+      "title": "100th nationally, Iranian National University Entrance Exam (Mathematics & Physics)",
+      "year": "2022 (1401)"
+    }
   ],
   "skills": [
-    { "group": "Hardware", "items": ["Verilog", "FPGA (Zynq)", "MIPS", "PCB design", "Altium Designer", "SPICE", "STM32", "ESP32", "Sensor integration", "Digital signal processing"] },
-    { "group": "Design tools", "items": ["Vivado", "Altera", "Proteus", "LaTeX", "Git"] },
-    { "group": "Verification", "items": ["UVM"] },
-    { "group": "Software", "items": ["C", "C++", "C#", "Java", "Python", "MATLAB", "CUDA", "JavaScript", "HTML", "CSS", "Linux", "MIPS Assembly", "x86 Assembly"] }
+    {
+      "group": "Hardware",
+      "items": [
+        "Verilog",
+        "FPGA (Zynq)",
+        "MIPS",
+        "PCB design",
+        "Altium Designer",
+        "SPICE",
+        "STM32",
+        "ESP32",
+        "Sensor integration",
+        "Digital signal processing"
+      ]
+    },
+    {
+      "group": "Design tools",
+      "items": [
+        "Vivado",
+        "Altera",
+        "Proteus",
+        "LaTeX",
+        "Git"
+      ]
+    },
+    {
+      "group": "Verification",
+      "items": [
+        "UVM"
+      ]
+    },
+    {
+      "group": "Software",
+      "items": [
+        "C",
+        "C++",
+        "C#",
+        "Java",
+        "Python",
+        "MATLAB",
+        "CUDA",
+        "JavaScript",
+        "HTML",
+        "CSS",
+        "Linux",
+        "MIPS Assembly",
+        "x86 Assembly"
+      ]
+    }
   ],
   "cv": [
     {
@@ -139,7 +214,11 @@
       "description": "Design and implementation of a single-cycle MIPS processor in Verilog. Every instruction executes in one clock cycle, with the Fetch, Decode, Execute, Memory, and Write-Back stages in a single datapath.",
       "repo": "RezaNazariye/AdvancedComputerArchitecture_Single-Cycle_MIPS_Processor",
       "link": "",
-      "stack": ["Verilog", "MIPS", "Computer Architecture"]
+      "stack": [
+        "Verilog",
+        "MIPS",
+        "Computer Architecture"
+      ]
     },
     {
       "name": "Custom FPGA Architecture",
@@ -147,7 +226,12 @@
       "description": "A simple custom FPGA in Verilog, with CLBs, LUT4s, and a routing matrix. Logic was manually synthesized into a 38-bit SRAM bitstream to verify combinational and sequential circuits.",
       "repo": "RezaNazariye/VLSI_course_custom-fpga-architecture",
       "link": "",
-      "stack": ["Verilog", "FPGA", "LUT4", "Digital design"]
+      "stack": [
+        "Verilog",
+        "FPGA",
+        "LUT4",
+        "Digital design"
+      ]
     },
     {
       "name": "Hardware-Accelerated Edge Detection on Zynq SoC",
@@ -155,7 +239,11 @@
       "description": "Real-time image processing on a Xilinx Zynq-7000 SoC with hardware/software co-design. The Sobel edge detector runs in programmable logic, and a bare-metal C application on the ARM processor manages the camera interface and data flow.",
       "repo": "",
       "link": "",
-      "stack": ["Zynq SoC", "Vivado", "C"]
+      "stack": [
+        "Zynq SoC",
+        "Vivado",
+        "C"
+      ]
     },
     {
       "name": "PS–PL Image Processing on Zynq SoC",
@@ -163,7 +251,12 @@
       "description": "Reads an image from an SD card on the processing system, filters it in programmable logic, saves the result back to the SD card, and shows the processed image on an HDMI monitor.",
       "repo": "",
       "link": "",
-      "stack": ["Zynq SoC", "HDMI", "SD card", "C"]
+      "stack": [
+        "Zynq SoC",
+        "HDMI",
+        "SD card",
+        "C"
+      ]
     },
     {
       "name": "PS–PL Accelerated Waveform Generator",
@@ -171,7 +264,12 @@
       "description": "Hardware/software co-design with a custom programmable-logic IP that accelerates waveform generation. Controlled by a bare-metal application through an interrupt-driven BRAM interface, with AXI transactions debugged using the Vivado ILA.",
       "repo": "",
       "link": "",
-      "stack": ["Zynq SoC", "AXI", "BRAM", "Vivado ILA"]
+      "stack": [
+        "Zynq SoC",
+        "AXI",
+        "BRAM",
+        "Vivado ILA"
+      ]
     },
     {
       "name": "Embedded Security System on Orange Pi",
@@ -179,7 +277,13 @@
       "description": "A complete embedded security system on Linux: a multi-threaded Python service with OpenCV for real-time face detection, logging new faces to MySQL, and a web control panel for live video, CPU and memory monitoring, and remote configuration through a REST API.",
       "repo": "",
       "link": "",
-      "stack": ["Python", "OpenCV", "MySQL", "Linux", "REST API"]
+      "stack": [
+        "Python",
+        "OpenCV",
+        "MySQL",
+        "Linux",
+        "REST API"
+      ]
     },
     {
       "name": "UVM Verification of an RTC Clock-Generation Circuit",
@@ -187,7 +291,9 @@
       "description": "A UVM-based testbench that verifies a submodule of an RTC clock-generation circuit, built to learn the UVM methodology.",
       "repo": "",
       "link": "",
-      "stack": ["UVM"]
+      "stack": [
+        "UVM"
+      ]
     },
     {
       "name": "Parallel Matrix Multiplication on GPU",
@@ -195,7 +301,10 @@
       "description": "Matrix multiplication in C with the CUDA library, optimized for speed on parallel hardware.",
       "repo": "",
       "link": "",
-      "stack": ["CUDA", "C"]
+      "stack": [
+        "CUDA",
+        "C"
+      ]
     }
   ],
   "team": []
